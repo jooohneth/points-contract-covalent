@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.26;
 
-import "../lib/openzeppelin-contracts/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "../lib/openzeppelin-contracts/contracts/access/Ownable.sol";
 import "../lib/openzeppelin-contracts/contracts/utils/cryptography/MerkleProof.sol";
 
-contract Drip is Ownable {
+contract Powder is Ownable {
   bytes32 public merkleRoot;
-  uint256 private _counter; 
 
   mapping(address => bool) public claimed;
   mapping(address => uint256) public points;
@@ -34,15 +32,6 @@ contract Drip is Ownable {
     claimed[account] = true;
 
     emit Claimed(account, 100 ether);
-  }
-
-  function checkEligibility(bytes32[] memory proof, address account) external view returns(bool){
-      bytes32 leaf = keccak256(abi.encodePacked(account));
-  
-      if (!claimed[account] && MerkleProof.verify(proof, merkleRoot, leaf)) {
-          return true;
-      }
-      return false;
   }
 }
 
